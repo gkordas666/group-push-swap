@@ -10,44 +10,52 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-t_node *node_new(int value)
-{
-	t_node	*new;
+#include "push_swap.h"
 
-	new = malloc(sizeof(t_node));
-	if (!new)
-		return (NULL);
-	new->value = value;
-	new->index = -1;
-	new->next = NULL;
-	new->prev = NULL;
-	return (new);
+/* Creates and returns a new node with the given integer value */
+t_node	*node_new(int value)
+{
+	t_node	*new; // Declare a pointer to the new node
+
+	new = malloc(sizeof(t_node)); // Allocate memory for the node
+	if (!new) // If allocation failed
+		return (NULL); // Return NULL to signal failure
+	new->value = value; // Store the integer value in the node
+	new->index = -1; // Index is unknown until Student B runs index_stack()
+	new->next = NULL; // No next node yet (will be linked later)
+	new->prev = NULL; // No previous node yet (will be linked later)
+	return (new); // Return the fully initialized node
 }
 
-t_stack *init_stack(void)
+/* Allocates and returns an empty stack structure */
+t_stack	*init_stack(void)
 {
-	t_stack	*init;
+	t_stack	*stack; // Declare a pointer to the new stack
 
-	init = malloc(sizeof(t_stack));
-	if (!init)
-		return (NULL);
-	init->top = NULL;
-	init->bottom = NULL;
-	init->size = 0;
-	return (init);
+	stack = malloc(sizeof(t_stack)); // Allocate memory for the stack
+	if (!stack) // If allocation failed
+		return (NULL); // Return NULL to signal failure
+	stack->top = NULL; // No elements yet, top is empty
+	stack->bottom = NULL; // No elements yet, bottom is empty
+	stack->size = 0; // Stack starts with zero elements
+	return (stack); // Return the empty stack
 }
 
-void	stack_add_back(t_stack *stack, t_node *new)
+/* Adds a node to the bottom of the stack (used during parsing to preserve order) */
+void	stack_add_back(t_stack *stack, t_node *new_node)
 {
-	if (!stack->top)
+	if (!stack || !new_node) // If either pointer is NULL
+		return ; // Do nothing, avoid segfault
+	if (!stack->top) // If the stack is currently empty
 	{
-		stack->top = new;
-		stack->bottom = new;
-		stack->size = 1;
-		return ;
+		stack->top = new_node; // New node is the first and only top
+		stack->bottom = new_node; // New node is also the bottom
 	}
-	stack->bottom->next = new;
-	new->prev = stack->bottom;
-	stack->bottom = new;
-	stack->size++;
+	else // Stack already has at least one element
+	{
+		stack->bottom->next = new_node; // Link current bottom to new node
+		new_node->prev = stack->bottom; // Link new node back to current bottom
+		stack->bottom = new_node; // Update bottom to point to new node
+	}
+	stack->size++; // Increment the element counter
 }

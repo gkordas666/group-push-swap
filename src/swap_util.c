@@ -10,17 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "push_swap.h"
+
 void	free_split(char **split)
 {
-	int	i;
+	int	i; // Index to traverse the array
 
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
+	i = 0; // Start at the first string
+	while (split[i]) // While current string is not NULL
 	{
-		free(split[i]);
-		i++;
+		free(split[i]); // Free the current string
+		i++; // Move to next string
 	}
-	free(split);
+	free(split); // Free the array of pointers itself
+}
+
+void	free_stack(t_stack *stack)
+{
+	t_node	*current; // Pointer to traverse the list
+	t_node	*next; // Temporary pointer to save next before freeing current
+
+	if (!stack) // If stack is NULL
+		return ; // Nothing to free
+	current = stack->top; // Start from the top of the stack
+	while (current) // While there are nodes to free
+	{
+		next = current->next; // Save the next node before freeing current
+		free(current); // Free the current node
+		current = next; // Move to the saved next node
+	}
+	free(stack); // Free the stack structure itself
 }
