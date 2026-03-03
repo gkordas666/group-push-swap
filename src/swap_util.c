@@ -41,3 +41,19 @@ void	free_stack(t_stack *stack)
 	}
 	free(stack); // Free the stack structure itself
 }
+
+int	is_sorted(t_stack *stack)
+{
+	t_node	*current;
+
+	if (!stack || !stack->top || stack->size < 2)
+		return (1);
+	current = stack->top;
+	while (current->next)
+	{
+		if (current->value > current->next->value)
+			return (0);
+		current = current->next;
+	}
+	return (1);
+}

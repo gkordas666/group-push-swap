@@ -18,27 +18,19 @@
 # include <limits.h>
 # include "libft.h"
 
-/*
-** NODE STRUCTURE: The building block of our doubly linked list.
-** value: The actual integer from input.
-** index: The relative rank (0 to N-1), essential for Radix Sort.
-** next: Pointer to the element below (towards the bottom).
-** prev: Pointer to the element above (towards the top).
-*/
+# define STRAT_ADAPTIVE 0
+# define STRAT_SIMPLE   1
+# define STRAT_MEDIUM   2
+# define STRAT_COMPLEX  3
+
 typedef struct s_node
 {
-	int             value;
-	int             index;
-	struct s_node   *next;
-	struct s_node   *prev;
+	int				value;
+	int				index;
+	struct s_node	*next;
+	struct s_node	*prev;
 }	t_node;
 
-/*
-** STACK STRUCTURE: Keeps track of the stack's boundaries and size.
-** top: The first element (where operations like sa, pa, ra happen).
-** bottom: The last element (useful for rra and adding elements).
-** size: Current number of elements (avoids looping to count).
-*/
 typedef struct s_stack
 {
 	t_node	*top;
@@ -46,7 +38,22 @@ typedef struct s_stack
 	int		size;
 }	t_stack;
 
-/* Prototypes for Student A's work */
+typedef struct s_stats
+{
+	int	op[11];
+	int	total;
+}	t_stats;
+
+typedef struct s_data
+{
+	t_stack	*a;
+	t_stack	*b;
+	t_stats	stats;
+	int		bench;
+	int		strat_used;
+}	t_data;
+
+/* stack / parsing / utils */
 t_node	*node_new(int value);
 t_stack	*init_stack(void);
 void	stack_add_back(t_stack *stack, t_node *new_node);
@@ -57,18 +64,26 @@ int		has_duplicates(t_stack *stack);
 void	free_split(char **split);
 int		parse_arguments(int argc, char **argv, t_stack *stack_a);
 double	get_disorder(t_stack *stack);
+int		is_sorted(t_stack *stack);
 
 /* Operations */
-void	sa(t_stack *a);
-void	sb(t_stack *b);
-void	ss(t_stack *a, t_stack *b);
-void	pa(t_stack *a, t_stack *b);
-void	pb(t_stack *a, t_stack *b);
-void	ra(t_stack *a);
-void	rb(t_stack *b);
-void	rr(t_stack *a, t_stack *b);
-void	rra(t_stack *a);
-void	rrb(t_stack *b);
-void	rrr(t_stack *a, t_stack *b);
+void	sa(t_data *d);
+void	sb(t_data *d);
+void	ss(t_data *d);
+void	pa(t_data *d);
+void	pb(t_data *d);
+void	ra(t_data *d);
+void	rb(t_data *d);
+void	rr(t_data *d);
+void	rra(t_data *d);
+void	rrb(t_data *d);
+void	rrr(t_data *d);
+
+/* Algorithms */
+void	adaptive_sort(t_data *d);
+void	simple_sort(t_data *d);
+void	medium_sort(t_data *d);
+void	complex_sort(t_data *d);
+void	normalize_stack(t_node *a, int size);
 
 #endif

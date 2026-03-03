@@ -12,115 +12,138 @@
 
 #include "push_swap.h"
 
-#include "push_swap.h" // Include all structures and prototypes
-
 /* Converts a string to a long integer (to detect int overflow) */
 long	ft_atol(const char *str)
 {
-	long	result; // Stores the converted number
-	int		sign; // Stores the sign (+1 or -1)
+	long	result;
+	int		sign;
 
-	result = 0; // Initialize result to zero
-	sign = 1; // Default sign is positive
-	while (*str == ' ' || (*str >= 9 && *str <= 13)) // Skip whitespace characters
-		str++; // Move to next character
-	if (*str == '-' || *str == '+') // If there is a sign character
+	result = 0;
+	sign = 1;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		if (*str == '-') // If the sign is negative
-			sign = -1; // Set sign to -1
-		str++; // Move past the sign character
+		if (*str == '-')
+			sign = -1;
+		str++;
 	}
-	while (*str >= '0' && *str <= '9') // While current char is a digit
+	while (*str >= '0' && *str <= '9')
 	{
-		result = result * 10 + (*str - '0'); // Shift result left and add digit
-		str++; // Move to next character
+		result = result * 10 + (*str - '0');
+		str++;
 	}
-	return (result * sign); // Apply sign and return the final value
+	return (result * sign);
 }
 
-/* Returns 1 if the string is a valid integer within INT_MIN/INT_MAX, 0 otherwise */
-int	is_valid_number(char *str)
-{
-	int		i; // Index to traverse the string
-	long	num; // Stores the converted value as long for overflow check
-
-	i = 0; // Start at the beginning of the string
-	if (str[i] == '-' || str[i] == '+') // If there is a sign character
-		i++; // Skip it
-	if (!str[i]) // If string is empty after sign
-		return (0); // Not a valid number
-	while (str[i]) // Loop through remaining characters
-	{
-		if (str[i] < '0' || str[i] > '9') // If character is not a digit
-			return (0); // Not a valid number
-		i++; // Move to next character
-	}
-	num = ft_atol(str); // Convert string to long to check for overflow
-	if (num < INT_MIN || num > INT_MAX) // If value is outside int range
-		return (0); // Overflow detected, not valid
-	return (1); // All checks passed, valid number
-}
-
-/* Returns 1 if there are duplicate values in the stack, 0 otherwise */
+/* Returns 1 if there are duplicate values in the stack */
 int	has_duplicates(t_stack *stack)
 {
-	t_node	*current; // Outer loop pointer
-	t_node	*checker; // Inner loop pointer to compare against current
+	t_node	*current;
+	t_node	*checker;
 
-	current = stack->top; // Start outer loop from the top
-	while (current) // Loop through all nodes
+	current = stack->top;
+	while (current)
 	{
-		checker = current->next; // Start inner loop from the node after current
-		while (checker) // Loop through remaining nodes
+		checker = current->next;
+		while (checker)
 		{
-			if (current->value == checker->value) // If two values are equal
-				return (1); // Duplicate found
-			checker = checker->next; // Move inner pointer forward
+			if (current->value == checker->value)
+				return (1);
+			checker = checker->next;
 		}
-		current = current->next; // Move outer pointer forward
+		current = current->next;
 	}
-	return (0); // No duplicates found
+	return (0);
 }
 
-/* Processes a single token, validates it and adds it to the stack */
-static int	process_token(char *token, t_stack *stack_a)
+int	is_valid_number(char *str)
 {
-	int	value; // Stores the converted integer value
+	int		i;
+	long	num;
 
-	if (!is_valid_number(token)) // If the token is not a valid integer
-		return (0); // Return failure
-	value = (int)ft_atol(token); // Convert token to int safely via long
-	stack_add_back(stack_a, node_new(value)); // Create node and add to stack
-	return (1); // Return success
+	i = 0;
+	// 1. Si la string est vide après le split (ne devrait pas arriver mais sécurité)
+	if (!str[i])
+		return (0);
+	// 2. Gestion du signe
+	if (str[i] == '-')
+	{
+		i++;
+		// ERREUR CRUCIALE : Si on a un '-' il DOIT y avoir un chiffre après
+		// C'est ici que le "--2" sera détecté car str[1] est '-' et non un chiffre
+		if (!str[i] || !ft_isdigit(str[i]))
+			return (0);
+	}
+	// 3. Refus des zéros inutiles (ex: "01")
+	if (str[i] == '0' && str[i + 1] != '\0')
+		return (0);
+	// 4. On vérifie que tout le reste sont des chiffres
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	// 5. Overflow et -0
+	num = ft_atol(str);
+	if (num > INT_MAX || num < INT_MIN)
+		return (0);
+	if (num == 0 && str[0] == '-')
+		return (0);
+	return (1);
 }
 
-/* Parses all arguments and fills stack A, returns 0 on error */
+static int	process_split(char **split, t_stack *stack_a)
+{
+	int		i;
+	t_node	*new;
+
+	i = 0;
+	if (!split || !split[0])
+		return (0);
+	while (split[i])
+	{
+		if (!is_valid_number(split[i]))
+			return (0);
+		new = node_new((int)ft_atol(split[i]));
+		if (!new)
+			return (0);
+		stack_add_back(stack_a, new);
+		i++;
+	}
+	return (1);
+}
+
 int	parse_arguments(int argc, char **argv, t_stack *stack_a)
 {
-	int		i; // Index to traverse argv
-	int		j; // Index to traverse split result
-	char	**split; // Array of strings from ft_split
+	int		i;
+	char	**split;
 
-	i = 1; // Start from argv[1] (skip program name)
-	while (i < argc) // Loop through all arguments
+	i = 1;
+	while (i < argc)
 	{
-		split = ft_split(argv[i], ' '); // Split argument by spaces
-		if (!split) // If ft_split failed
-			return (0); // Return failure
-		j = 0; // Start from first token
-		while (split[j]) // Loop through all tokens
+		if (ft_strncmp(argv[i], "--simple", 9) == 0
+		|| ft_strncmp(argv[i], "--medium", 9) == 0
+		|| ft_strncmp(argv[i], "--complex", 10) == 0
+		|| ft_strncmp(argv[i], "--bench", 8) == 0
+		|| ft_strncmp(argv[i], "--adaptive", 11) == 0)
 		{
-			if (!process_token(split[j], stack_a)) // If token is invalid
-			{
-				free_split(split); // Free the split array
-				return (0); // Return failure
-			}
-			j++; // Move to next token
+			i++;
+			continue ;
 		}
-		free_split(split); // Free split after processing all tokens
-		i++; // Move to next argument
+		// Erreur si l'argument est vide "" ou juste des espaces
+		split = ft_split(argv[i], ' ');
+		if (!split || !split[0])
+		{
+			if (split)
+				free_split(split);
+			return (0);
+		}
+		if (!process_split(split, stack_a))
+			return (free_split(split), 0);
+		free_split(split);
+		i++;
 	}
-	if (has_duplicates(stack_a)) // Check for duplicate values in the stack
-		return (0); // Duplicates found, return failure
-	return (1); // All arguments valid, return success
+	return (!has_duplicates(stack_a));
 }

@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/02/16 16:57:23 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/13 17:12:45 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/13 17:15:06 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
+	size_t				i;
+	const unsigned char	*p1;
+	const unsigned char	*p2;
 
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	p1 = (const unsigned char *)s1;
+	p2 = (const unsigned char *)s2;
+	i = 0;
+	while (i < n)
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		if (p1[i] != p2[i])
+			return ((int)(p1[i] - p2[i]));
+		i++;
 	}
-	return ((double)mistakes / (double)total_pairs);
+	return (0);
 }
