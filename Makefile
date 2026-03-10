@@ -11,21 +11,11 @@ LIBFT_DIR   = libft
 LIBFT_A     = $(LIBFT_DIR)/libft.a
 
 # Source files
-SRC_FILES   = main.c \
-              stack_init.c \
-              parsing.c \
-              get_disorder.c \
-              operations_swap_a.c \
-              operations_push.c \
-              operations_rotate.c \
-              rev_rotate.c \
-              swap_util.c \
-              adaptive.c \
-              complex.c \
-              medium.c \
-              medium_utils.c \
-              normalize.c \
-              simple.c
+SRC_FILES = adaptive.c	main.c		operations_push.c    rev_rotate.c \
+		bench.c		medium.c	operations_rotate.c  simple.c \
+		complex.c	medium_utils.c	operations_swap_a.c  stack_init.c \
+		get_disorder.c	normalize.c	parsing.c	     swap_util.c
+
 
 OBJ         = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 

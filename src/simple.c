@@ -3,46 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gkordas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/27 14:25:45 by gkordas           #+#    #+#             */
-/*   Updated: 2026/02/27 14:25:49 by gkordas          ###   ########.fr       */
+/*   Created: 2026/03/10 15:07:35 by misasant          #+#    #+#             */
+/*   Updated: 2026/03/10 15:07:37 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+static int	get_min_pos(t_stack *s)
+{
+	t_node	*tmp;
+	int		min;
+	int		pos;
+	int		i;
+
+	tmp = s->top;
+	min = tmp->value;
+	pos = 0;
+	i = 0;
+	while (tmp)
+	{
+		if (tmp->value < min)
+		{
+			min = tmp->value;
+			pos = i;
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (pos);
+}
+
 static void	sort_three(t_data *d)
 {
-	int	f;
-	int	s;
-	int	t;
+	int	a;
+	int	b;
+	int	c;
 
-	f = d->a->top->value;
-	s = d->a->top->next->value;
-	t = d->a->top->next->next->value;
-	if (f > s && s < t && f < t)
-		sa(d);
-	else if (f > s && s > t)
-	{
-		sa(d);
-		rra(d);
-	}
-	else if (f > s && s < t && f > t)
+	a = d->a->top->value;
+	b = d->a->top->next->value;
+	c = d->a->bottom->value;
+	if (a > b && a > c)
 		ra(d);
-	else if (f < s && s > t && f < t)
-	{
-		sa(d);
-		ra(d);
-	}
-	else if (f < s && s > t && f > t)
+	else if (b > a && b > c)
 		rra(d);
+	if (d->a->top->value > d->a->top->next->value)
+		sa(d);
+}
+
+static void	push_min_to_b(t_data *d)
+{
+	int	pos;
+
+	while (d->a->size > 3)
+	{
+		pos = get_min_pos(d->a);
+		while (pos-- > 0)
+			ra(d);
+		pb(d);
+	}
 }
 
 void	simple_sort(t_data *d)
 {
-	if (d->a->size == 2 && d->a->top->value > d->a->top->next->value)
-		sa(d);
-	else if (d->a->size == 3)
+	if (d->a->size == 1)
+		return ;
+	if (d->a->size == 2)
+	{
+		if (d->a->top->value > d->a->top->next->value)
+			sa(d);
+		return ;
+	}
+	if (d->a->size == 3)
+	{
 		sort_three(d);
+		return ;
+	}
+	push_min_to_b(d);
+	sort_three(d);
+	while (d->b->size > 0)
+		pa(d);
 }

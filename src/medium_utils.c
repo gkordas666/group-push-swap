@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   medium_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gkordas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/27 15:44:48 by gkordas           #+#    #+#             */
-/*   Updated: 2026/02/27 15:44:50 by gkordas          ###   ########.fr       */
+/*   Created: 2026/03/10 15:07:04 by misasant          #+#    #+#             */
+/*   Updated: 2026/03/10 15:07:06 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "push_swap.h"
 
 int	find_position_in_chunk(t_stack *a, int min, int max)

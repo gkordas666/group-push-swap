@@ -14,32 +14,32 @@
 
 void	free_split(char **split)
 {
-	int	i; // Index to traverse the array
+	int	i;
 
-	i = 0; // Start at the first string
-	while (split[i]) // While current string is not NULL
+	i = 0;
+	while (split[i])
 	{
-		free(split[i]); // Free the current string
-		i++; // Move to next string
+		free(split[i]);
+		i++;
 	}
-	free(split); // Free the array of pointers itself
+	free(split);
 }
 
 void	free_stack(t_stack *stack)
 {
-	t_node	*current; // Pointer to traverse the list
-	t_node	*next; // Temporary pointer to save next before freeing current
+	t_node	*current;
+	t_node	*next;
 
-	if (!stack) // If stack is NULL
-		return ; // Nothing to free
-	current = stack->top; // Start from the top of the stack
-	while (current) // While there are nodes to free
+	if (!stack)
+		return ;
+	current = stack->top;
+	while (current)
 	{
-		next = current->next; // Save the next node before freeing current
-		free(current); // Free the current node
-		current = next; // Move to the saved next node
+		next = current->next;
+		free(current);
+		current = next;
 	}
-	free(stack); // Free the stack structure itself
+	free(stack);
 }
 
 int	is_sorted(t_stack *stack)
@@ -55,5 +55,53 @@ int	is_sorted(t_stack *stack)
 			return (0);
 		current = current->next;
 	}
+	return (1);
+}
+
+int	has_duplicates(t_stack *stack)
+{
+	t_node	*current;
+	t_node	*checker;
+
+	current = stack->top;
+	while (current)
+	{
+		checker = current->next;
+		while (checker)
+		{
+			if (current->value == checker->value)
+				return (1);
+			checker = checker->next;
+		}
+		current = current->next;
+	}
+	return (0);
+}
+
+int	is_valid_number(char *str)
+{
+	int		i;
+	long	num;
+
+	i = 0;
+	if (!str[i])
+		return (0);
+	if (str[i] == '-')
+	{
+		i++;
+		if (!str[i] || !ft_isdigit(str[i]))
+			return (0);
+	}
+	if (str[i] == '0' && str[i + 1] != '\0')
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	num = ft_atol(str);
+	if (num > INT_MAX || num < INT_MIN || (num == 0 && str[0] == '-'))
+		return (0);
 	return (1);
 }

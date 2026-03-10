@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   normalize.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gkordas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/27 14:23:56 by gkordas           #+#    #+#             */
-/*   Updated: 2026/02/27 14:23:59 by gkordas          ###   ########.fr       */
+/*   Created: 2026/03/10 15:07:21 by misasant          #+#    #+#             */
+/*   Updated: 2026/03/10 15:07:23 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "push_swap.h"
 
 int	*stack_to_array(t_node *a, int size)

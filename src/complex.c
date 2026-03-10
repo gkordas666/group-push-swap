@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   complex.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gkordas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/27 14:23:11 by gkordas           #+#    #+#             */
-/*   Updated: 2026/02/27 14:23:14 by gkordas          ###   ########.fr       */
+/*   Created: 2026/03/10 15:06:23 by misasant          #+#    #+#             */
+/*   Updated: 2026/03/10 15:06:25 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	get_max_index(t_stack *stack)
+static int	get_max_index(t_stack *a)
 {
 	int		max;
 	t_node	*tmp;
 
-	if (!stack || !stack->top)
+	if (!a || !a->top)
 		return (0);
-	tmp = stack->top;
+	tmp = a->top;
 	max = tmp->index;
 	while (tmp)
 	{
@@ -30,19 +30,19 @@ int	get_max_index(t_stack *stack)
 	return (max);
 }
 
-int	count_bits(t_stack *stack)
+static int	count_bits(t_stack *a)
 {
 	int	max_index;
 	int	bits;
 
-	max_index = get_max_index(stack);
+	max_index = get_max_index(a);
 	bits = 0;
 	while ((max_index >> bits) != 0)
 		bits++;
 	return (bits);
 }
 
-void	process_bit(t_data *d, int bit)
+static void	process_bit(t_data *d, int bit)
 {
 	int	i;
 	int	total;
