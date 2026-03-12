@@ -11,48 +11,47 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-/*
-** Moves the top node to the bottom of the stack.
-** Before: top -> [1] [2] [3] <- bottom
-** After:  top -> [2] [3] [1] <- bottom
-*/
+
 static void	rotate(t_stack *stack)
 {
-	t_node	*first; // The current top node (will move to bottom)
-	t_node	*second; // The node after top (will become new top)
-	t_node	*last; // The current bottom node
+	t_node	*first;
+	t_node	*second;
+	t_node	*last;
 
-	if (!stack || stack->size < 2) // If stack is NULL or has less than 2 elements
-		return ; // Cannot rotate, do nothing
-	first = stack->top; // Save pointer to current top
-	second = first->next; // Save pointer to the node after top
-	last = stack->bottom; // Save pointer to current bottom
-	stack->top = second; // Update stack top to the second node
-	second->prev = NULL; // New top has no previous node
-	last->next = first; // Link current bottom to the old top
-	first->prev = last; // Link old top back to current bottom
-	first->next = NULL; // Old top is now the last node, no next
-	stack->bottom = first; // Update stack bottom to the old top
+	if (!stack || stack->size < 2)
+		return ;
+	first = stack->top;
+	second = first->next;
+	last = stack->bottom;
+	stack->top = second;
+	second->prev = NULL;
+	last->next = first;
+	first->prev = last;
+	first->next = NULL;
+	stack->bottom = first;
 }
 
-/* ra: Rotate stack A (top goes to bottom) */
-void	ra(t_stack *a)
+void	ra(t_data *d)
 {
-	rotate(a); // Perform rotation on stack A
-	write(1, "ra\n", 3); // Print the operation name to stdout
+	rotate(d->a);
+	write(1, "ra\n", 3);
+	d->stats.op[5]++;
+	d->stats.total++;
 }
 
-/* rb: Rotate stack B (top goes to bottom) */
-void	rb(t_stack *b)
+void	rb(t_data *d)
 {
-	rotate(b); // Perform rotation on stack B
-	write(1, "rb\n", 3); // Print the operation name to stdout
+	rotate(d->b);
+	write(1, "rb\n", 3);
+	d->stats.op[6]++;
+	d->stats.total++;
 }
 
-/* rr: Rotate both stacks simultaneously */
-void	rr(t_stack *a, t_stack *b)
+void	rr(t_data *d)
 {
-	rotate(a); // Perform rotation on stack A
-	rotate(b); // Perform rotation on stack B
-	write(1, "rr\n", 3); // Print the operation name to stdout (only once)
+	rotate(d->a);
+	rotate(d->b);
+	write(1, "rr\n", 3);
+	d->stats.op[7]++;
+	d->stats.total++;
 }

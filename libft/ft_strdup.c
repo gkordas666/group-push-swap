@@ -1,39 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/03/10 15:06:34 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/13 17:26:56 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/13 17:29:53 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+char	*ft_strdup(const char *s1)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
+	char		*dup;
+	size_t		len;
+	size_t		i;
+	const char	*temp;
 
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	len = 0;
+	temp = s1;
+	while (*temp)
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		len++;
+		temp++;
 	}
-	return ((double)mistakes / (double)total_pairs);
+	dup = (char *)malloc((len + 1) * sizeof(char));
+	if (dup == NULL)
+	{
+		return (NULL);
+	}
+	i = 0;
+	while (i < len)
+	{
+		dup[i] = s1[i];
+		i++;
+	}
+	dup[len] = '\0';
+	return (dup);
 }

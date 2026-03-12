@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/03/10 15:06:34 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/14 16:13:13 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/14 16:14:55 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+void	ft_putnbr_fd(int n, int fd)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
-
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	if (n == -2147483648)
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		ft_putchar_fd('-', fd);
+		ft_putchar_fd('2', fd);
+		ft_putnbr_fd(147483648, fd);
 	}
-	return ((double)mistakes / (double)total_pairs);
+	else if (n < 0)
+	{
+		ft_putchar_fd('-', fd);
+		ft_putnbr_fd(-n, fd);
+	}
+	else if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putchar_fd(n % 10 + '0', fd);
+	}
+	else
+		ft_putchar_fd(n + '0', fd);
 }

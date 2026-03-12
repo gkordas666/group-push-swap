@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/03/10 15:06:34 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/14 16:58:14 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/14 17:00:09 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
+	t_list	*last;
 
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		*lst = new;
+		return ;
 	}
-	return ((double)mistakes / (double)total_pairs);
+	last = ft_lstlast(*lst);
+	last->next = new;
 }

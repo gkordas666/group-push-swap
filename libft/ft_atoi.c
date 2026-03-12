@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/03/10 15:06:34 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/13 12:44:35 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/13 12:44:41 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+int	ft_atoi(const char *str)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
+	size_t	i;
+	int		sign;
+	long	result;
 
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	i = 0;
+	sign = 1;
+	result = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		if (str[i] == '-')
+			sign = -1;
+		i++;
 	}
-	return ((double)mistakes / (double)total_pairs);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return ((int)(result * sign));
 }

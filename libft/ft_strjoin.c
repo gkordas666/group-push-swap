@@ -1,39 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/03/10 15:06:34 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/13 17:36:30 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/13 17:39:04 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
+	size_t	len1;
+	size_t	len2;
+	size_t	i;
+	char	*res;
 
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	if (!s1 || !s2)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	res = (char *)malloc(len1 + len2 + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (i < len1)
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		res[i] = s1[i];
+		i++;
 	}
-	return ((double)mistakes / (double)total_pairs);
+	while (i < len1 + len2)
+	{
+		res[i] = s2[i - len1];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
 }

@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/03/10 15:06:34 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/13 17:15:31 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/13 17:18:10 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t n)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
+	size_t	i;
+	size_t	j;
 
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	if (!haystack && n == 0)
+		return (NULL);
+	if (needle[0] == '\0')
+		return ((char *)haystack);
+	i = 0;
+	while (haystack[i] && i < n)
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		j = 0;
+		while (needle[j]
+			&& (i + j) < n
+			&& haystack[i + j] == needle[j])
+			j++;
+		if (needle[j] == '\0')
+			return ((char *)(haystack + i));
+		i++;
 	}
-	return ((double)mistakes / (double)total_pairs);
+	return (NULL);
 }

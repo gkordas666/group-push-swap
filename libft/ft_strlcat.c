@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_disorder.c                                     :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misasant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 16:56:29 by misasant          #+#    #+#             */
-/*   Updated: 2026/03/10 15:06:34 by misasant         ###   ########.fr       */
+/*   Created: 2026/01/13 16:33:51 by misasant          #+#    #+#             */
+/*   Updated: 2026/01/13 16:39:53 by misasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-double	get_disorder(t_stack *stack)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	t_node	*i;
-	t_node	*j;
-	int		mistakes;
-	int		total_pairs;
+	size_t	dlen;
+	size_t	slen;
+	size_t	i;
 
-	if (stack->size < 2)
-		return (0.0);
-	mistakes = 0;
-	total_pairs = stack->size * (stack->size - 1) / 2;
-	i = stack->top;
-	while (i)
+	slen = ft_strlen(src);
+	dlen = 0;
+	while (dlen < size && dst[dlen])
+		dlen++;
+	if (dlen == size)
+		return (size + slen);
+	i = 0;
+	while (src[i] && (dlen + i + 1) < size)
 	{
-		j = i->next;
-		while (j)
-		{
-			if (i->value > j->value)
-				mistakes++;
-			j = j->next;
-		}
-		i = i->next;
+		dst[dlen + i] = src[i];
+		i++;
 	}
-	return ((double)mistakes / (double)total_pairs);
+	dst[dlen + i] = '\0';
+	return (dlen + slen);
 }

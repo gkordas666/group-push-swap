@@ -12,43 +12,42 @@
 
 #include "push_swap.h"
 
-/*
-** Swaps the values and indexes of the top two nodes.
-** We swap VALUES, not pointers, to keep the linked list structure intact.
-*/
 static void	swap(t_stack *stack)
 {
-	int	temp_val; // Temporary storage for the top node's value
-	int	temp_idx; // Temporary storage for the top node's index
+	int	temp_val;
+	int	temp_idx;
 
-	if (!stack || stack->size < 2) // If stack is NULL or has less than 2 elements
-		return ; // Cannot swap, do nothing
-	temp_val = stack->top->value; // Save top node's value
-	temp_idx = stack->top->index; // Save top node's index
-	stack->top->value = stack->top->next->value; // Copy second node's value to top
-	stack->top->index = stack->top->next->index; // Copy second node's index to top
-	stack->top->next->value = temp_val; // Restore saved value to second node
-	stack->top->next->index = temp_idx; // Restore saved index to second node
+	if (!stack || stack->size < 2)
+		return ;
+	temp_val = stack->top->value;
+	temp_idx = stack->top->index;
+	stack->top->value = stack->top->next->value;
+	stack->top->index = stack->top->next->index;
+	stack->top->next->value = temp_val;
+	stack->top->next->index = temp_idx;
 }
 
-/* sa: Swap the first two elements of stack A */
-void	sa(t_stack *a)
+void	sa(t_data *d)
 {
-	swap(a); // Perform the swap on stack A
-	write(1, "sa\n", 3); // Print the operation name to stdout
+	swap(d->a);
+	write(1, "sa\n", 3);
+	d->stats.op[0]++;
+	d->stats.total++;
 }
 
-/* sb: Swap the first two elements of stack B */
-void	sb(t_stack *b)
+void	sb(t_data *d)
 {
-	swap(b); // Perform the swap on stack B
-	write(1, "sb\n", 3); // Print the operation name to stdout
+	swap(d->b);
+	write(1, "sb\n", 3);
+	d->stats.op[1]++;
+	d->stats.total++;
 }
 
-/* ss: Swap the first two elements of both stacks simultaneously */
-void	ss(t_stack *a, t_stack *b)
+void	ss(t_data *d)
 {
-	swap(a); // Perform the swap on stack A
-	swap(b); // Perform the swap on stack B
-	write(1, "ss\n", 3); // Print the operation name to stdout (only once)
+	swap(d->a);
+	swap(d->b);
+	write(1, "ss\n", 3);
+	d->stats.op[2]++;
+	d->stats.total++;
 }
